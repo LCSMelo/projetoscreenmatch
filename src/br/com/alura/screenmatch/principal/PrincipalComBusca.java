@@ -1,5 +1,8 @@
 package br.com.alura.screenmatch.principal;
 
+import br.com.alura.screenmatch.modelos.Titulo;
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,9 +16,8 @@ public class PrincipalComBusca {
         System.out.println("Digite um livro para busca: ");
         var busca = leitura.nextLine();
 
-//        String endereco = "https://www.googleapis.com/books/v1/volumes?q=intitle:" + busca + "&key=" + "&apikey=AIzaSyDK-JhGWQjfbbN6m2kTCg8XHOE3X9mNVdI";
-        String endereco = "https://api.coingecko.com/api/v3/ping";
-
+        String endereco = "http://www.omdbapi.com/?apikey=" + "12f733cb&t=" + busca;
+//        String endereco = "https://api.coingecko.com/api/v3/ping";
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -23,6 +25,11 @@ public class PrincipalComBusca {
                 .build();
         HttpResponse<String> response = client
                 .send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+        String json = response.body();
+        System.out.println(json);
+
+        Gson gson = new Gson();
+        Titulo meuTitulo = gson.fromJson(json, Titulo.class);
+        System.out.println(meuTitulo);
     }
 }
